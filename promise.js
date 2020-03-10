@@ -3,14 +3,21 @@ const RESOLVED = 'RESOLVED'
 const REJECTED = 'REJECTED'
 class Promise {
     constructor(excutor) {
+        this.status = PENDING;
+        this.reason = null;
+        this.value = null;
         const resolved = value => {
-            this.value = value;
-            this.status = RESOLVED;
+            if(this.status === PENDING) {
+                this.value = value;
+                this.status = RESOLVED;
+            }
         }
 
         const rejected = reason => {
-            this.reason = reason;
-            this.status = REJECTED;
+            if (this.status === PENDING) {
+                this.reason = reason;
+                this.status = REJECTED;
+            }
         }
 
         excutor(resolved, rejected);
