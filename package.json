@@ -1,0 +1,22 @@
+{
+  "name": "promise",
+  "version": "1.0.0",
+  "description": "",
+  "main": "promise.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Omelettesheep/promise.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Omelettesheep/promise/issues"
+  },
+  "homepage": "https://github.com/Omelettesheep/promise#readme",
+  "dependencies": {
+    "promises-aplus-tests": "^2.1.2"
+  }
+}
