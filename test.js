@@ -1,12 +1,18 @@
-const Promise = require('./promise');
-const p = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve('hello world~')
-    })
-});
+const fs = require('fs');
 
-p.then(data => {
-    console.log(data);
-}, err => {
-    console.log(err)
+const readFile = filePath => new Promise((resolve, reject) => {
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            reject(err)
+        }
+        resolve(data)
+    })
 })
+
+readFile('1').then(data => {
+    readFile(data).then(data => {
+        readFile(data).then(data => {
+            console.log(data)
+        }, err => { console.log(err) })
+    }, err => { console.log(err) })
+}, err => { console.log(err) })
