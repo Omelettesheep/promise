@@ -1,6 +1,24 @@
 const PENDING = 'PENDING'
 const RESOLVED = 'RESOLVED'
 const REJECTED = 'REJECTED'
+
+const resolvePromise = (x, resolve, reject) => {
+    if((typeof x === 'object' && x !== null) || typeof x === 'function') {
+        const {then} = x;
+        if(typeof then === 'function') {
+            then.call(x, y => {
+                resolvePromise(y, resolve, reject)
+            }, e => {
+                reject(e);
+            });
+        } else {
+            resolve(x);
+        }
+    } else {
+        resolve(x);
+    }
+
+}
 class Promise {
     constructor(excutor) {
         this.status = PENDING;
@@ -45,7 +63,7 @@ class Promise {
             if (this.status === REJECTED) {
                 try {
                     const x = onRejected(this.reason)
-                    resolve(x)
+                    resolvePromise(x, resolve, reject);
                 } catch (e) {
                     reject(e)
                 }
@@ -55,7 +73,7 @@ class Promise {
                 this.onFulfilledCallbacks.push(() => {
                     try {
                         const x = onFullfilled(this.value)
-                        resolve(x)
+                        resolvePromise(x, resolve, reject);
                     } catch (e) {
                         reject(e)
                     }
@@ -63,7 +81,7 @@ class Promise {
                 this.onRejectedCallbacks.push(() => {
                     try {
                         const x = onRejected(this.reason)
-                        resolve(x)
+                        resolvePromise(x, resolve, reject);
                     } catch (e) {
                         reject(e)
                     }
