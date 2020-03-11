@@ -30,18 +30,45 @@ class Promise {
     }
 
     then(onFullfilled, onRejected) {
-        if (this.status === RESOLVED) {
-            onFullfilled(this.value);
-        }
+        return new Promise((resolve, reject) => {
+            if (this.status === RESOLVED) {
+                try {
+                    const x = onFullfilled(this.value)
+                    resolve(x)
+                } catch (e) {
+                    reject(e)
+                }
+            }
 
-        if (this.status === REJECTED) {
-            onRejected(this.reason);
-        }
+            if (this.status === REJECTED) {
+                try {
+                    const x = onRejected(this.reason)
+                    resolve(x)
+                } catch (e) {
+                    reject(e)
+                }
+            }
 
-        if(this.status === PENDING) {
-            this.onFulfilledCallbacks.push(() => onFullfilled(this.value))
-            this.onRejectedCallbacks.push(() => onRejected(this.reason))
-        }
+            if (this.status === PENDING) {
+                this.onFulfilledCallbacks.push(() => {
+                    try {
+                        const x = onFullfilled(this.value)
+                        resolve(x)
+                    } catch (e) {
+                        reject(e)
+                    }
+                })
+                this.onRejectedCallbacks.push(() => {
+                    try {
+                        const x = onRejected(this.reason)
+                        resolve(x)
+                    } catch (e) {
+                        reject(e)
+                    }
+                })
+            }
+
+        })
     }
 }
 
