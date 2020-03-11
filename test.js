@@ -11,7 +11,26 @@ const readFile = filePath => new Promise((resolve, reject) => {
 })
 
 // 前一个 then return 的东西直接当后一个 then 的参数了
-readFile('1')
-    .then(data => readFile(data), e => { console.log(e) })
-    .then(data => readFile(data), e => { console.log(e) })
-    .then(data => { console.log(data) }, e => { console.log(e) })
+// readFile('1')
+//     .then(data => readFile(data), e => { console.log(e) })
+//     .then(data => readFile(data), e => { console.log(e) })
+//     .then(data => { console.log(data) }, e => { console.log(e) })
+
+
+const p = new Promise((resolve, reject) => {
+    resolve(1)
+})
+
+p.then(data => {
+    console.log('data ', data)
+}, e => {
+    console.log('err ', e)
+})
+
+let np = new Promise((resolve) => {
+    resolve()
+})
+let np2 = np.then(() => np2)
+np2.then(null, reason => {
+    console.log(reason);
+})
